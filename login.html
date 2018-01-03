@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <form id="form" action="http://10.0.156.234:8888/login" method="post">
+        <input type="text" id="user" placeholder="用户名" name="user" value="">
+        <input type="password" id="pass" placeholder="密码" name="pass" value="">
+        <input type="submit" id="btn" name="" value="提交">
+    </form>
+  </body>
+  <script type="text/javascript">
+    var form = document.querySelector('#form');
+    var user = document.querySelector('#user');
+    var pass = document.querySelector('#pass');
+    var btn = document.querySelector('#btn');
+
+    form.onsubmit = function(ev){
+      var e = event ||ev;
+      e.preventDefault();
+    }
+
+    btn.onclick = function(){
+      var userStr = user.value;
+      var passStr = pass.value;
+      console.log(userStr);
+      console.log(passStr);
+      var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveObject('Microsoft.XMLHTPP');
+
+      xhr.open('post','http://10.0.156.234:8888/login',true);
+
+      xhr.send('user=' + userStr + '&pass=' + passStr);
+
+      xhr.onreadystatechange = function(){
+        if (xhr.readyState == 4 && xhr.status == 200) {
+          console.log(xhr.responseText);
+          var obj = JSON.parse(xhr.responseText);
+          if (obj.code) {
+            alert('登录成功');
+          }else{
+            alert('登录失败');
+          }
+        }
+      }
+    }
+  </script>
+</html>
